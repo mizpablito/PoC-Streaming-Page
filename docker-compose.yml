@@ -1,0 +1,24 @@
+# networks:
+#   web:
+#     external: true
+
+services:
+  web-to-stream:
+    build: .
+    container_name: web_streamer
+    # networks:
+    #   - web
+    environment:
+      # Strona, którą chcesz streamować
+      - TARGET_URL=https://time.is/
+      # Adres RTMP (dla YouTube/Twitch to rtmp://, dla własnego serwera może być rtsp://)
+      - STREAM_URL=rtmp://mediamtx-rtsp:1935/test1
+      - REFRESH_ENABLED=true
+      - REFRESH_INTERVAL_MINUTES=30 # Zmienna sterująca interwałem odświezania strony (w minutach)
+    restart: always
+    # Opcjonalnie: Limit zasobów, żeby nie zjadło całego CPU
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2G
